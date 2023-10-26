@@ -28,8 +28,8 @@ int main(){
         //A contagem de tempo começa aqui:
 
         
-        inicializa_matriz(&matriz,n);
-        preencher_matriz_interativa(&matriz);
+        Inicializa_matriz(&matriz,n);
+        Preencher_matriz_interativa(&matriz);
 
         //for de teste, retirar depois
 
@@ -45,8 +45,8 @@ int main(){
         FILE *arquivo;
         arquivo = fopen("ExemploTP2.txt", "r"); //Abre o arquivo para leitura  
         fscanf(arquivo, "%d", &n); //Quantidade de cidades
-        inicializa_matriz(&matriz, n);
-        preencher_matriz_arquivo(&matriz, arquivo);
+        Inicializa_matriz(&matriz, n);
+        Preencher_matriz_arquivo(&matriz, arquivo);
 
 
         //for de teste, retirar depois
@@ -62,8 +62,13 @@ int main(){
     }
 
     // criar o for que vai preencher o vetor de 0 ate n-1
-    preencher_vetor(&matriz);
+    Preencher_vetor(&matriz);
 
     Gerar_Permutacoes(&matriz, 0, (matriz.n)-2);
+
+    printf("soma: %d\n", matriz.soma);
+    for(int j = 0; j < n-1; j++){
+        printf("%d ", matriz.vetor_resposta[j]);
+    }
     return 0;
 }

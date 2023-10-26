@@ -29,8 +29,15 @@ void Gerar_Permutacoes(Matriz *matriz, int inf, int sup) {
             printf("%d ", matriz->vetor_permutacoes[i]);
         }
         printf("\n");
-        int soma = Calcula_Distancia(matriz, matriz->vetor_permutacoes);
-        printf(" soma = %d\n", soma);
+        int soma_aux = Calcula_Distancia(matriz, matriz->vetor_permutacoes);
+        if (soma_aux < matriz->soma || matriz->soma == 0){
+            matriz -> soma = soma_aux;
+            for(int i = 0; i<matriz->n-1; i++){
+                matriz->vetor_resposta[i] = matriz->vetor_permutacoes[i];
+            }
+        }
+
+        printf(" soma aux final= %d\n", soma_aux);
 
     } else {
         for (int i = inf; i <= sup; i++) {
