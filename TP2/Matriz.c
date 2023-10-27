@@ -1,15 +1,18 @@
 #include "Matriz.h"
 #include <stdlib.h>
+#include <time.h>
 #define melissa 5384 
 #define leticia 5781
 #define caio 5784
 
-int Soma_matriculas(){ // Fazendo o mod de cada numero de matricula por 1000, 100, 10 e 01, temos os respectivos numeros relacionados a cada casa decimal das matriculas
+int Soma_matriculas(){ 
+   // Fazendo o mod de cada numero de matricula por 1000, 100, 10 e 01, temos os respectivos 
+   // numeros relacionados a cada casa decimal das matriculas
    int mm = (((melissa %  1000)/10)+((melissa%100)/10)+((melissa%10)/10)+((melissa%1)/10));
    int mc = (((caio %  1000)/10)+((caio%100)/10)+((caio%10)/10)+((caio%1)/10));
    int ml = (((leticia % 1000)/10)+((leticia%100)/10)+((leticia%10)/10)+((leticia%1)/10));
    
-   return mm + mc + ml;
+   return mm + mc + ml; // Soma todas as matrículas para que seja utilizado para descobrirmos a cidade partida.
 }
 
 int Inicializa_matriz(Matriz* matriz, int n){
@@ -42,20 +45,21 @@ int Inicializa_matriz(Matriz* matriz, int n){
 
 
 void Preencher_matriz_interativa(Matriz* matriz) {
+    srand(time(NULL));
     for (int i = 0; i < matriz -> n; i++) {
-        for (int j = 0; j < matriz -> n; j++) {
+        for (int j = 0; j < matriz -> n; j++) {//
             if (i == j) {
                 matriz -> distancia_cidades[i][j] = 0;//Se i == j significa que a distância da cidade até ela mesma, logo é 0
             } else {
-                matriz -> distancia_cidades[i][j] = (rand() % 60)+10; //A distancia entre as cidades vai de 10 a 60
+                matriz -> distancia_cidades[i][j] =  (rand() % 60)+10; //A distancia entre as cidades vai de 10 a 60
             }
         }
     }
 }
 
 void Preencher_matriz_arquivo(Matriz* matriz, FILE* arquivo) {
-    for (int i = 0; i < matriz -> n; i++) {
-        for (int j = 0; j < matriz -> n; j++) {
+    for (int i = 0; i < (matriz -> n); i++) {
+        for (int j = 0; j < (matriz -> n); j++) {
             if (i == j) { //Se i == j significa que a distância da cidade até ela mesma, logo é 0
                 matriz -> distancia_cidades[i][j] = 0;
             } else {
@@ -66,14 +70,62 @@ void Preencher_matriz_arquivo(Matriz* matriz, FILE* arquivo) {
 }
 
 void Preencher_vetor(Matriz* matriz){
-
     //int vetor[n-1]; // O vetor tem tamanho n-1, pois a nossa cidade_partida nao entrara na permutacao
     int aux = 0;
     for(int i=0; i< (matriz->n);i++){ // preenche o vetor com os valores(cidades) que serao utilizadas na permutacao
         if(i != matriz->cidade_partida){
-            matriz -> vetor_permutacoes[aux] = i;
+            matriz -> vetor_permutacoes[aux] = i; //
             aux += 1;
         }
     }
 }
 
+void Printar_Dados(Matriz* matriz, double tempo_final){
+    printf("Matriz:\n");
+    for(int i = 0; i < matriz->n; i++){
+        for(int j = 0; j < matriz->n; j++){
+            printf("%d ", matriz->distancia_cidades[i][j]); // Printamos todas as distancias entre as cidades 
+        }
+        printf("\n");
+    }
+
+    printf("Menor caminho percorrido: %d\n", matriz->soma); //Printando a menor soma
+    
+    printf("Caminho percorrido: ");
+    //A cidade de partida é sempre o primeiro e o ultimo elemento do caminho, as demais cidades estão no vetor resposta
+    printf("%d ", matriz -> cidade_partida); 
+    for(int j = 0; j < (matriz->n)-1; j++){
+        printf("%d ", matriz->vetor_resposta[j]);
+    }
+    printf("%d\n", matriz -> cidade_partida);
+    printf("Tempo de execução: %lf \n", tempo_final);
+}
+
+int Printar_Dados_Arquivo(Matriz* matriz, double tempo_final){
+    FILE *arquivo;
+    arquivo = fopen("resultado.txt", "w");
+    if (arquivo == NULL) {
+        printf("Não foi possível abrir o arquivo para escrita.\n");
+        return 1;
+    }
+
+    fprintf(arquivo, "Matriz:\n");
+    for(int i = 0; i < matriz->n; i++){
+        for(int j = 0; j < matriz->n; j++){
+            fprintf(arquivo, "%d ", matriz->distancia_cidades[i][j]); // Printamos todas as distancias entre as cidades 
+        }
+        fprintf(arquivo, "\n");
+    }
+
+    fprintf(arquivo, "Menor caminho percorrido: %d\n", matriz->soma); //Printando a menor soma
+    
+    fprintf(arquivo, "Caminho percorrido: ");
+    //A cidade de partida é sempre o primeiro e o ultimo elemento do caminho, as demais cidades estão no vetor resposta
+    fprintf(arquivo,"%d ", matriz -> cidade_partida); 
+    for(int j = 0; j < (matriz->n)-1; j++){
+        fprintf(arquivo, "%d ", matriz->vetor_resposta[j]);
+    }
+    fprintf(arquivo, "%d\n", matriz -> cidade_partida);
+    fprintf(arquivo, "Tempo de execução: %lf \n", tempo_final);
+    return 0;
+}
