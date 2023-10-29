@@ -1,12 +1,13 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
-    int n; // tamanho da Matriz
-    int **distancia_cidades;
-    int *vetor_permutacoes;
-    int cidade_partida;
-    int soma;
-    int *vetor_resposta;
+    int n; //Tamanho da Matriz
+    int **distancia_cidades; //Matriz de adjacencia
+    int *vetor_permutacoes; //Vetor que sera permutado
+    int cidade_partida; //Cidade de partida e chegada
+    int soma; //Menor distancia 
+    int *vetor_resposta; //Vetor do caminho percorrido para obter a menor distancia
 } Matriz;
 
 // Funcoes do Matriz.c
